@@ -1,0 +1,23 @@
+{
+  "name": "arb01",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "npx vitest",
+    "start": "npx esrun src/main.ts"
+  },
+  "private": true,
+  "devDependencies": {
+    "@vitest/coverage-v8": "^2.1.5",
+    "chai-string": "^1.5.0",
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.5"
+  },
+  "dependencies": {
+    "@tenderly/sdk": "^0.3.0",
+    "alchemy-sdk": "^3.4.8",
+    "axios": "^1.7.7"
+  }
+}
