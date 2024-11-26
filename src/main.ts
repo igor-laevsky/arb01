@@ -1,7 +1,6 @@
 import {Alchemy, AlchemySubscription, Network} from "alchemy-sdk";
 import {decodeCalldata, getAllKnownRouterAddresses} from "./routers";
-import { Tenderly, Network as TenderlyNetwork } from '@tenderly/sdk';
-import axios from 'axios';
+import {expect} from "vitest";
 
 const settings = {
   apiKey: "***REMOVED***",
@@ -18,13 +17,6 @@ alchemy.ws.on(
     (res) => new_transaction_received(res)
 );
 
-const tenderly = new Tenderly({
-  accessKey: 'aDcl02woP0zlU4hXrEaCQIPU7V7NDU7C',
-  accountName: 'igmyrj',
-  projectName: 'test',
-  network: TenderlyNetwork.MAINNET,
-});
-
 interface Transaction {
     hash: string,
     from: string,
@@ -38,33 +30,25 @@ interface Transaction {
 }
 
 async function new_transaction_received(res: Transaction) {
-    console.log("\n\n\n\n>>>>>New transaction")
-    console.log(res);
+    console.log("\n\n\n\n>>>>>New transaction", res.hash);
 
-    // Tanderly simulation
-    const simulation = await axios.post(
-        `https://mainnet.gateway.tenderly.co/5XUsylSD8lnwM0meFknXr5`,
-        {
-            id: 0,
-            jsonrpc: "2.0",
-            method: "tenderly_simulateTransaction",
-            params: [
-                {
-                    from: res.from,
-                    to: res.to,
-                    data: res.input,
-                    value: res.value
-                },
-                "latest"
-            ]
+    const swaps = (() => {
+        try {
+            return decodeCalldata(res.to, res.input);
+        } catch (err: any) {
+            console.error(`Failed while decoding calldata ${err}`);
+            console.error(err.stack);
+            return [];
         }
-    );
+    })();
 
-    console.log(simulation.data);
-    console.log(simulation.data.result?.trace);
-    console.log(simulation.data.result?.stateChanges);
+    if (swaps.length === 0) {
+        console.warn("We didn't decode any swaps from the router, skipping the transaction");
+        return;
+    }
 
-    // Manual simulation
-    // const descr = decodeCalldata(res.to, res.input);
-    // console.log(descr);
+    // Estimate price impact of each swap
+
+
+    // Estimate price on binance
 }

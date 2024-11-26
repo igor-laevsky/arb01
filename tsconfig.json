@@ -3,6 +3,7 @@
     "target": "es2020",
     "module": "nodenext",
     "esModuleInterop": true,
+    "resolveJsonModule": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "strictNullChecks": true,

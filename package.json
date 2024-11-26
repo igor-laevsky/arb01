@@ -16,8 +16,12 @@
     "vitest": "^2.1.5"
   },
   "dependencies": {
-    "@tenderly/sdk": "^0.3.0",
+    "@uniswap/universal-router-sdk": "^4.7.0",
+    "@uniswap/v2-sdk": "^4.7.0",
+    "@uniswap/v3-sdk": "^3.19.0",
     "alchemy-sdk": "^3.4.8",
-    "axios": "^1.7.7"
+    "axios": "^1.7.7",
+    "ethers": "^6.13.4",
+    "ethers-multicall": "^0.2.3"
   }
 }
