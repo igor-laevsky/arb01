@@ -1,16 +1,25 @@
-import {assert, expect, test} from 'vitest'
+import 'dotenv/config'
+
+import {assert, expect, test, beforeEach} from 'vitest'
 import {Alchemy, Network} from "alchemy-sdk";
 import * as v3 from "@uniswap/v3-sdk";
 
-import {_for_testing, estimatePriceImpact} from "../src/uniswap";
+import {_for_testing} from "../src/uniswap.js";
 const { getUniswapToken, getV2PairReserves, getV2PriceImpact, getV3PriceImpact } = _for_testing;
 
-test('should get correct v2 pair reserves', async () => {
+interface TestRpc {
+  client: Alchemy
+}
+
+beforeEach<TestRpc>(async (context) => {
     const settings = {
-      apiKey: "***REMOVED***",
+      apiKey: process.env.ALCHEMY_KEY,
       network: Network.ETH_MAINNET,
     };
-    const client = new Alchemy(settings);
+    context.client = new Alchemy(settings);
+});
+
+test<TestRpc>('should get correct v2 pair reserves', async ({ client }) => {
     const token_in = await getUniswapToken(
         '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2', client);
     const token_out = await getUniswapToken(
@@ -26,12 +35,7 @@ test('should get correct v2 pair reserves', async () => {
     expect(reserves[1]).to.gt(0);
 });
 
-test('should get v2 price impact', async () => {
-    const settings = {
-      apiKey: "***REMOVED***",
-      network: Network.ETH_MAINNET,
-    };
-    const client = new Alchemy(settings);
+test<TestRpc>('should get v2 price impact', async ({ client }) => {
     const token_in = await getUniswapToken(
         '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2', client);
     const token_out = await getUniswapToken(
@@ -59,12 +63,7 @@ test('should get v2 price impact', async () => {
     expect(parseFloat(impact2.toSignificant(10))).to.gt(1);
 });
 
-test('should get v3 price impact', async () => {
-    const settings = {
-      apiKey: "***REMOVED***",
-      network: Network.ETH_MAINNET,
-    };
-    const client = new Alchemy(settings);
+test<TestRpc>('should get v3 price impact', async ({ client }) => {
     const token_in = await getUniswapToken(
         '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2', client);
     const token_out = await getUniswapToken(
