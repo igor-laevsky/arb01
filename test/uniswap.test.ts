@@ -43,7 +43,6 @@ test('should get v2 price impact', async () => {
             token_in: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
             token_out: '0x69babe9811cc86dcfc3b8f9a14de6470dd18eda4',
             amount_in: '0x4563918244F40000',
-            amount_out: '0x0'
         },
         client);
 
@@ -52,7 +51,6 @@ test('should get v2 price impact', async () => {
         {
             token_in: '0x69babe9811cc86dcfc3b8f9a14de6470dd18eda4',
             token_out: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
-            amount_in: '0x0',
             amount_out: '0x4563918244F40000'
         },
         client);
@@ -77,7 +75,6 @@ test('should get v3 price impact', async () => {
         {
             token_in: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
             token_out: '0xdac17f958d2ee523a2206206994597c13d831ec7',
-            amount_in: '0x0',
             amount_out: '20050000000'
         },
         client);
@@ -89,7 +86,6 @@ test('should get v3 price impact', async () => {
             token_in: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
             token_out: '0xdac17f958d2ee523a2206206994597c13d831ec7',
             amount_in: '1000000000000000000000', // 1000 eth
-            amount_out: '0x0'
         },
         client);
     expect(parseFloat(impact2.toSignificant(10))).to.gt(0);

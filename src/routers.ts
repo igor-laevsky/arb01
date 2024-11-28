@@ -1,17 +1,15 @@
-import {BigNumber, Utils} from "alchemy-sdk";
-import {
-    ABI_DEFINITION,
-    CommandType, extractPathFromV3,
-    UNIVERSAL_ROUTER_ABI
-} from "./abi/universal_router";
-import { defaultAbiCoder } from "@ethersproject/abi"
-import { assert } from "./utils";
+import {CommandParser} from "./abi/universal_router.js";
 
 export interface SwapDescription {
     token_in: string,
     token_out: string,
-    amount_in: string
-    amount_out: string,
+    amount_in?: string,
+    amount_out?: string,
+
+    pool?: {
+        version?: "v2" | "v3",
+        fee?: number
+    }
 }
 
 type Decoder = (calldata: string) => SwapDescription[];
@@ -19,63 +17,55 @@ type Decoder = (calldata: string) => SwapDescription[];
 const KNOWN_ROUTERS: { [key: string]: Decoder } = {
     // Uniswap universal router
     '0x3fc91a3afd70395cd496c647d5a6cc9d4b2b7fad': (calldata: string) => {
-        const decoded = new Utils.Interface(UNIVERSAL_ROUTER_ABI)
-            .parseTransaction({data: calldata});
-
-        if (decoded.name != 'execute')
-            return [];
+        const parsed = CommandParser.parseCalldata(calldata);
 
         const swaps: SwapDescription[] = [];
-        const byte_commands = Utils.arrayify(decoded.args['commands']);
-        for (let i = 0; i < byte_commands.length; ++i) {
-            const real_command = byte_commands[i] & ((1 << 6) - 1);
-            assert(real_command in ABI_DEFINITION);
-            const args = defaultAbiCoder.decode(
-                ABI_DEFINITION[real_command], decoded.args['inputs'][i]);
-
-            //console.log(real_command);
-            // this can be multi-hop swap but only interested in entry and exit
-            switch (real_command) {
-                case CommandType.V3_SWAP_EXACT_IN: {
-                    const path = extractPathFromV3(args[3]);
-                    assert(path.length >= 4);
+        for (const command of parsed.commands) {
+            switch (command.commandName) {
+                case 'V3_SWAP_EXACT_OUT': {
+                    const path = command.params[3].value;
+                    swaps.push({
+                        token_in: path[path.length - 1].tokenIn,
+                        token_out: path[path.length - 1].tokenOut,
+                        amount_in: undefined,
+                        amount_out: command.params[1].value.toString(),
+                        pool: {version: "v3", fee: path[path.length - 1].fee}
+                    });
+                    break;
+                }
+                case 'V2_SWAP_EXACT_OUT': {
+                    const path = command.params[3].value;
                     swaps.push({
                         token_in: path[0],
-                        token_out: path[path.length - 2],
-                        amount_in: args[1].toHexString(),
-                        amount_out: '0x0'
-                    })
-                    break;
-                }
-                case CommandType.V3_SWAP_EXACT_OUT: {
-                    const path = extractPathFromV3(args[3]);
-                    assert(path.length >= 4);
-                    swaps.push({
-                        token_in: path[path.length - 2],
-                        token_out: path[0],
-                        amount_in: '0x0',
-                        amount_out: args[1].toHexString()
-                    })
-                    break;
-                }
-                case CommandType.V2_SWAP_EXACT_OUT:
-                    swaps.push({
-                        token_in: args[3][0],
-                        token_out: args[3][args[3].length - 1],
-                        amount_in: '0x0',
-                        amount_out: args[1].toHexString(),
+                        token_out: path[1],
+                        amount_in: undefined,
+                        amount_out: command.params[1].value.toString(),
+                        pool: {version: "v2"}
                     });
                     break;
-                case CommandType.V2_SWAP_EXACT_IN:
+                }
+                case 'V3_SWAP_EXACT_IN': {
+                    const path = command.params[3].value;
                     swaps.push({
-                        token_in: args[3][0],
-                        token_out: args[3][args[3].length - 1],
-                        amount_in: args[1].toHexString(),
-                        amount_out: '0x0'
+                        token_in: path[0].tokenIn,
+                        token_out: path[0].tokenOut,
+                        amount_in: command.params[1].value.toString(),
+                        amount_out: undefined,
+                        pool: {version: "v3", fee: path[0].fee}
                     });
                     break;
-                default:
+                }
+                case 'V2_SWAP_EXACT_IN': {
+                    const path = command.params[3].value;
+                    swaps.push({
+                        token_in: path[0],
+                        token_out: path[1],
+                        amount_in: command.params[1].value.toString(),
+                        amount_out: undefined,
+                        pool: {version: "v2"}
+                    });
                     break;
+                }
             }
         }
 
@@ -117,10 +107,8 @@ export function decodeCalldata(
         return [];
 
     for (let s of res) {
-        for (let key in s) {
-            //@ts-ignore
-            s[key] = s[key].toLowerCase();
-        }
+        s.token_in = s.token_in.toLowerCase();
+        s.token_out = s.token_out.toLowerCase();
     }
     return res;
 }

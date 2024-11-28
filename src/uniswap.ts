@@ -1,24 +1,32 @@
 import * as a from "alchemy-sdk";
-import * as us from "@uniswap/v3-sdk";
-import {SwapDescription} from "./routers";
-import {computePoolAddress} from "@uniswap/v3-sdk";
+import {SwapDescription} from "./routers.js";
+import {FeeAmount} from "@uniswap/v3-sdk";
 import * as v2 from "@uniswap/v2-sdk";
 import * as v3 from "@uniswap/v3-sdk";
 import * as uc from "@uniswap/sdk-core";
 import {ethers} from "ethers";
-import {assert} from "./utils";
-import Quoter from '@uniswap/v3-periphery/artifacts/contracts/lens/Quoter.sol/Quoter.json'
-import V3PoolAbi from '@uniswap/v3-core/artifacts/contracts/UniswapV3Pool.sol/UniswapV3Pool.json'
+import {assert} from "./utils.js";
+import Quoter from '@uniswap/v3-periphery/artifacts/contracts/lens/Quoter.sol/Quoter.json' with {type: "json"};
+import V3PoolAbi from '@uniswap/v3-core/artifacts/contracts/UniswapV3Pool.sol/UniswapV3Pool.json' with {type: "json"};
 
 const V2_FACTORY = '0x5c69bee701ef814a2b6a3edd4b1652cb9cc5aa6f'
 const V3_FACTORY = '0x1f98431c8ad98523631ae4a59f267346ea31f984'
 const V3_QUOTER = '0xb27308f9f90d607463bb33ea1bebb41c27ce5ab6'
 
-async function getUniswapToken(addr: string, client: a.Alchemy) {
+export async function getTokenMeta(addr: string, client: a.Alchemy) {
     const meta = await client.core.getTokenMetadata(addr);
     if (!meta.symbol || !meta.decimals)
         throw new Error(`Meta for token is incomplete ${addr}`);
 
+    return {
+        name: meta.name,
+        decimals: meta.decimals,
+        symbol: meta.symbol
+    };
+}
+
+async function getUniswapToken(addr: string, client: a.Alchemy) {
+    const meta = await getTokenMeta(addr, client);
     return new uc.Token(
         1, addr, meta.decimals, meta.symbol, meta.name ?? undefined);
 }
@@ -61,19 +69,19 @@ async function getV2PriceImpact(
     const price_before = v2_pair.priceOf(token_in);
 
     const actual_amount_in = (() => {
-        if (swap.amount_in != '0x0')
+        if (swap.amount_in)
             return uc.CurrencyAmount.fromRawAmount(token_in, swap.amount_in);
 
-        assert(swap.amount_out != '0x0'); // need at least some amount
+        assert(swap.amount_out); // need at least some amount
         return v2_pair.getInputAmount(
             uc.CurrencyAmount.fromRawAmount(token_out, swap.amount_out))[0];
     })();
 
     const actual_amount_out = (() => {
-        if (swap.amount_out != '0x0')
+        if (swap.amount_out)
             return uc.CurrencyAmount.fromRawAmount(token_out, swap.amount_out);
 
-        assert(swap.amount_in != '0x0'); // need at least some amount
+        assert(swap.amount_in); // need at least some amount
         return v2_pair.getOutputAmount(
             uc.CurrencyAmount.fromRawAmount(token_in, swap.amount_in))[0];
     })();
@@ -84,9 +92,9 @@ async function getV2PriceImpact(
         actual_amount_out);
 }
 
-async function getV3PriceImpact(
+async function getV3PoolMeta(
     token_in: uc.Token, token_out: uc.Token, fee: v3.FeeAmount,
-    swap: SwapDescription, client: a.Alchemy) {
+    client: a.Alchemy) {
 
     const pool_addr = v3.computePoolAddress({
         factoryAddress: V3_FACTORY,
@@ -100,8 +108,15 @@ async function getV3PriceImpact(
         // @ts-ignore
         await client.config.getProvider());
 
-    const slot0 = await pool_contract.slot0();
-    // only used to simplify starting price computation
+    return await pool_contract.slot0();
+}
+
+async function getV3PriceImpact(
+    token_in: uc.Token, token_out: uc.Token, fee: v3.FeeAmount,
+    swap: SwapDescription, client: a.Alchemy) {
+
+    const slot0 = await getV3PoolMeta(token_in, token_out, fee, client);
+
     const pool = new v3.Pool(
         token_in, token_out, fee,
         slot0.sqrtPriceX96.toString(), '0', Number(slot0.tick));
@@ -114,10 +129,10 @@ async function getV3PriceImpact(
     const price_before = pool.priceOf(token_in);
 
     const actual_amount_in = await (async () => {
-        if (swap.amount_in != '0x0')
+        if (swap.amount_in)
             return uc.CurrencyAmount.fromRawAmount(token_in, swap.amount_in);
 
-        assert(swap.amount_out != '0x0'); // need at least some amount
+        assert(swap.amount_out); // need at least some amount
         const quoted_amount_in = await quoter_contract.callStatic.quoteExactOutputSingle(
             token_in.address,
             token_out.address,
@@ -129,10 +144,10 @@ async function getV3PriceImpact(
     })();
 
     const actual_amount_out = await (async () => {
-        if (swap.amount_out != '0x0')
+        if (swap.amount_out)
             return uc.CurrencyAmount.fromRawAmount(token_out, swap.amount_out);
 
-        assert(swap.amount_in != '0x0'); // need at least some amount
+        assert(swap.amount_in); // need at least some amount
         const quoted_amount_out = await quoter_contract.callStatic.quoteExactInputSingle(
             token_in.address,
             token_out.address,
@@ -151,12 +166,27 @@ async function getV3PriceImpact(
 
 // Returns pair [min price impact, max price impact]
 export async function estimatePriceImpact(
-    swap: SwapDescription, client: a.Alchemy): Promise<[number, number]> {
+    swap: SwapDescription, client: a.Alchemy) {
 
     const token_in = await getUniswapToken(swap.token_in, client);
     const token_out = await getUniswapToken(swap.token_out, client);
 
-    return [1, 1];
+    switch (swap.pool?.version) {
+        case "v2": {
+            const percent = await getV2PriceImpact(
+                token_in, token_out, swap, client);
+            return parseFloat(percent.toSignificant(10));
+        }
+        case "v3": {
+            assert(swap.pool.fee); // must be defined
+            assert(swap.pool.fee in FeeAmount);
+            const percent = await getV3PriceImpact(
+                token_in, token_out, swap.pool.fee, swap, client);
+            return parseFloat(percent.toSignificant(10));
+        }
+        default:
+            throw new Error("Pool not found");
+    }
 }
 
 export const _for_testing = {

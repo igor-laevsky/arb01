@@ -12,8 +12,9 @@ test('uniswap universal router v2 exact in', () => {
     expect(res[0]).toEqual({
         token_in: '0x14fee680690900ba0cccfc76ad70fd1b95d10e16',
         token_out: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
-        amount_in: '0x0550BEC2F37D'.toLowerCase(),
-        amount_out: '0x0'
+        amount_in: '5844355969917'.toLowerCase(),
+        amount_out: undefined,
+        pool: {version: "v2"}
     });
 });
 
@@ -27,9 +28,10 @@ test('uniswap universal router v3 exact in', () => {
     expect(res.length).eq(1);
     expect(res[0]).toEqual({
         token_in: '0xdac17f958d2ee523a2206206994597c13d831ec7',
-        token_out: '0x7ce89243cc0d9e746609c57845eccbd9bb4b7315',
-        amount_in: '0x3b9aca00',
-        amount_out: '0x0'
+        token_out: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+        amount_in: '1000000000',
+        amount_out: undefined,
+        pool: {version: "v3", fee: 100}
     });
 });
 
@@ -44,8 +46,9 @@ test('uniswap universal router v2 exact out', () => {
     expect(res[0]).toEqual({
         token_in: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
         token_out: '0x69babe9811cc86dcfc3b8f9a14de6470dd18eda4',
-        amount_in: '0x0',
-        amount_out: '0x14e39cf213cb80'
+        amount_in: undefined,
+        amount_out: '5879762750000000',
+        pool: {version: "v2"}
     });
 });
 
@@ -60,7 +63,8 @@ test('uniswap universal router v3 exact out', () => {
     expect(res[0]).toEqual({
         token_in: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
         token_out: '0xdac17f958d2ee523a2206206994597c13d831ec7',
-        amount_in: '0x0',
-        amount_out: '0x04ab12b880'
+        amount_in: undefined,
+        amount_out: '20050000000',
+        pool: {version: "v3", fee: 500}
     });
 });

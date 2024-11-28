@@ -1,15 +1,25 @@
 import {Alchemy, AlchemySubscription, Network} from "alchemy-sdk";
-import {decodeCalldata, getAllKnownRouterAddresses} from "./routers";
-import {expect} from "vitest";
+import {decodeCalldata, getAllKnownRouterAddresses} from "./routers.js";
+import {estimatePriceImpact, getTokenMeta} from "./uniswap.js";
+// @ts-ignore
+import {binance} from 'ccxt';
+
+const b = new binance();
+const markets = await b.fetchMarkets();
+
+const avaliable_currencies = new Set(
+    markets.flatMap((m) => [m?.base, m?.quote]));
+avaliable_currencies.add('WETH');
+avaliable_currencies.add('WBTC');
 
 const settings = {
   apiKey: "***REMOVED***",
   network: Network.ETH_MAINNET,
 };
 
-const alchemy = new Alchemy(settings);
+const client = new Alchemy(settings);
 
-alchemy.ws.on(
+client.ws.on(
     {
         method: AlchemySubscription.PENDING_TRANSACTIONS,
         toAddress: getAllKnownRouterAddresses()
@@ -30,7 +40,7 @@ interface Transaction {
 }
 
 async function new_transaction_received(res: Transaction) {
-    console.log("\n\n\n\n>>>>>New transaction", res.hash);
+    console.log("\n\n\nNew transaction", res.hash);
 
     const swaps = (() => {
         try {
@@ -45,6 +55,39 @@ async function new_transaction_received(res: Transaction) {
     if (swaps.length === 0) {
         console.warn("We didn't decode any swaps from the router, skipping the transaction");
         return;
+    }
+
+    for (const swap of swaps) {
+        console.log("Transaction: ", res.hash);
+        console.log(swap);
+
+        const token_in_meta = await getTokenMeta(swap.token_in, client);
+        const token_out_meta = await getTokenMeta(swap.token_out, client);
+        if (!avaliable_currencies.has(token_in_meta.symbol)) {
+            console.warn(`Currency ${token_in_meta.symbol} is not on binance`);
+            continue;
+        }
+        if (!avaliable_currencies.has(token_out_meta.symbol)) {
+            console.warn(`Currency ${token_out_meta.symbol} is not on binance`);
+            continue;
+        }
+
+        const start = performance.now();
+        const impact = await (async () => {
+            try {
+                return await estimatePriceImpact(swap, client);
+            } catch (err: any) {
+                console.error(`Failed while estimating price impact ${err}`);
+                console.error(err.stack);
+                return 0;
+            }
+        })();
+        const end = performance.now();
+
+        console.log(`Estimated price impact ${impact} in ${end - start}ms`);
+        if (impact >= 5.0) {
+            throw Error("Detected large price change!");
+        }
     }
 
     // Estimate price impact of each swap

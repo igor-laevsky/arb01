@@ -1,501 +1,13 @@
-export const UNIVERSAL_ROUTER_ABI = [
-  {
-    "inputs": [
-      {
-        "components": [
-          {
-            "internalType": "address",
-            "name": "permit2",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "weth9",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "seaportV1_5",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "seaportV1_4",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "openseaConduit",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "nftxZap",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "x2y2",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "foundation",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "sudoswap",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "elementMarket",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "nft20Zap",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "cryptopunks",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "looksRareV2",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "routerRewardsDistributor",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "looksRareRewardsDistributor",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "looksRareToken",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "v2Factory",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "v3Factory",
-            "type": "address"
-          },
-          {
-            "internalType": "bytes32",
-            "name": "pairInitCodeHash",
-            "type": "bytes32"
-          },
-          {
-            "internalType": "bytes32",
-            "name": "poolInitCodeHash",
-            "type": "bytes32"
-          }
-        ],
-        "internalType": "struct RouterParameters",
-        "name": "params",
-        "type": "tuple"
-      }
-    ],
-    "stateMutability": "nonpayable",
-    "type": "constructor"
-  },
-  {
-    "inputs": [],
-    "name": "BalanceTooLow",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "BuyPunkFailed",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "ContractLocked",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "ETHNotAccepted",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "commandIndex",
-        "type": "uint256"
-      },
-      {
-        "internalType": "bytes",
-        "name": "message",
-        "type": "bytes"
-      }
-    ],
-    "name": "ExecutionFailed",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "FromAddressIsNotOwner",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "InsufficientETH",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "InsufficientToken",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "InvalidBips",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "commandType",
-        "type": "uint256"
-      }
-    ],
-    "name": "InvalidCommandType",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "InvalidOwnerERC1155",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "InvalidOwnerERC721",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "InvalidPath",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "InvalidReserves",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "InvalidSpender",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "LengthMismatch",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "SliceOutOfBounds",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "TransactionDeadlinePassed",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "UnableToClaim",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "UnsafeCast",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "V2InvalidPath",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "V2TooLittleReceived",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "V2TooMuchRequested",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "V3InvalidAmountOut",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "V3InvalidCaller",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "V3InvalidSwap",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "V3TooLittleReceived",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "V3TooMuchRequested",
-    "type": "error"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "RewardsSent",
-    "type": "event"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes",
-        "name": "looksRareClaim",
-        "type": "bytes"
-      }
-    ],
-    "name": "collectRewards",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes",
-        "name": "commands",
-        "type": "bytes"
-      },
-      {
-        "internalType": "bytes[]",
-        "name": "inputs",
-        "type": "bytes[]"
-      }
-    ],
-    "name": "execute",
-    "outputs": [],
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes",
-        "name": "commands",
-        "type": "bytes"
-      },
-      {
-        "internalType": "bytes[]",
-        "name": "inputs",
-        "type": "bytes[]"
-      },
-      {
-        "internalType": "uint256",
-        "name": "deadline",
-        "type": "uint256"
-      }
-    ],
-    "name": "execute",
-    "outputs": [],
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256[]",
-        "name": "",
-        "type": "uint256[]"
-      },
-      {
-        "internalType": "uint256[]",
-        "name": "",
-        "type": "uint256[]"
-      },
-      {
-        "internalType": "bytes",
-        "name": "",
-        "type": "bytes"
-      }
-    ],
-    "name": "onERC1155BatchReceived",
-    "outputs": [
-      {
-        "internalType": "bytes4",
-        "name": "",
-        "type": "bytes4"
-      }
-    ],
-    "stateMutability": "pure",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      },
-      {
-        "internalType": "bytes",
-        "name": "",
-        "type": "bytes"
-      }
-    ],
-    "name": "onERC1155Received",
-    "outputs": [
-      {
-        "internalType": "bytes4",
-        "name": "",
-        "type": "bytes4"
-      }
-    ],
-    "stateMutability": "pure",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      },
-      {
-        "internalType": "bytes",
-        "name": "",
-        "type": "bytes"
-      }
-    ],
-    "name": "onERC721Received",
-    "outputs": [
-      {
-        "internalType": "bytes4",
-        "name": "",
-        "type": "bytes4"
-      }
-    ],
-    "stateMutability": "pure",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes4",
-        "name": "interfaceId",
-        "type": "bytes4"
-      }
-    ],
-    "name": "supportsInterface",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "pure",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "int256",
-        "name": "amount0Delta",
-        "type": "int256"
-      },
-      {
-        "internalType": "int256",
-        "name": "amount1Delta",
-        "type": "int256"
-      },
-      {
-        "internalType": "bytes",
-        "name": "data",
-        "type": "bytes"
-      }
-    ],
-    "name": "uniswapV3SwapCallback",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "stateMutability": "payable",
-    "type": "receive"
-  }
-]
+// Same as uniswap-sdk but for ethers v6
 
+import { ethers } from 'ethers'
+import abi from '@uniswap/universal-router/artifacts/contracts/UniversalRouter.sol/UniversalRouter.json' with {type: "json"};
+
+/**
+ * CommandTypes
+ * @description Flags that modify a command's execution
+ * @enum {number}
+ */
 export enum CommandType {
   V3_SWAP_EXACT_IN = 0x00,
   V3_SWAP_EXACT_OUT = 0x01,
@@ -513,111 +25,429 @@ export enum CommandType {
   PERMIT2_TRANSFER_FROM_BATCH = 0x0d,
   BALANCE_CHECK_ERC20 = 0x0e,
 
-  // NFT-related command types
-  SEAPORT_V1_5 = 0x10,
-  LOOKS_RARE_V2 = 0x11,
-  NFTX = 0x12,
-  CRYPTOPUNKS = 0x13,
-  // 0x14,
-  OWNER_CHECK_721 = 0x15,
-  OWNER_CHECK_1155 = 0x16,
-  SWEEP_ERC721 = 0x17,
+  V4_SWAP = 0x10,
+  V3_POSITION_MANAGER_PERMIT = 0x11,
+  V3_POSITION_MANAGER_CALL = 0x12,
+  V4_INITIALIZE_POOL = 0x13,
+  V4_POSITION_MANAGER_CALL = 0x14,
 
-  X2Y2_721 = 0x18,
-  SUDOSWAP = 0x19,
-  NFT20 = 0x1a,
-  X2Y2_1155 = 0x1b,
-  FOUNDATION = 0x1c,
-  SWEEP_ERC1155 = 0x1d,
-  ELEMENT_MARKET = 0x1e,
-
-  SEAPORT_V1_4 = 0x20,
   EXECUTE_SUB_PLAN = 0x21,
-  APPROVE_ERC20 = 0x22,
 }
 
-const ALLOW_REVERT_FLAG = 0x80
+export enum Subparser {
+  V3PathExactIn,
+  V3PathExactOut,
+}
 
-const REVERTIBLE_COMMANDS = new Set<CommandType>([
-  CommandType.SEAPORT_V1_5,
-  CommandType.SEAPORT_V1_4,
-  CommandType.NFTX,
-  CommandType.LOOKS_RARE_V2,
-  CommandType.X2Y2_721,
-  CommandType.X2Y2_1155,
-  CommandType.FOUNDATION,
-  CommandType.SUDOSWAP,
-  CommandType.NFT20,
-  CommandType.EXECUTE_SUB_PLAN,
-  CommandType.CRYPTOPUNKS,
-  CommandType.ELEMENT_MARKET,
-])
+export enum Parser {
+  Abi,
+  V4Actions,
+  V3Actions,
+}
+
+export type ParamType = {
+  readonly name: string
+  readonly type: string
+  readonly subparser?: Subparser
+}
+
+export type CommandDefinition =
+  | {
+      parser: Parser.Abi
+      params: ParamType[]
+    }
+  | {
+      parser: Parser.V4Actions
+    }
+  | {
+      parser: Parser.V3Actions
+    }
+
+const ALLOW_REVERT_FLAG = 0x80
+const REVERTIBLE_COMMANDS = new Set<CommandType>([CommandType.EXECUTE_SUB_PLAN])
 
 const PERMIT_STRUCT =
-  '((address token,uint160 amount,uint48 expiration,uint48 nonce) details, address spender, uint256 sigDeadline)'
+  '((address token,uint160 amount,uint48 expiration,uint48 nonce) details,address spender,uint256 sigDeadline)'
 
 const PERMIT_BATCH_STRUCT =
-  '((address token,uint160 amount,uint48 expiration,uint48 nonce)[] details, address spender, uint256 sigDeadline)'
+  '((address token,uint160 amount,uint48 expiration,uint48 nonce)[] details,address spender,uint256 sigDeadline)'
+
+const POOL_KEY_STRUCT = '(address currency0,address currency1,uint24 fee,int24 tickSpacing,address hooks)'
 
 const PERMIT2_TRANSFER_FROM_STRUCT = '(address from,address to,uint160 amount,address token)'
 const PERMIT2_TRANSFER_FROM_BATCH_STRUCT = PERMIT2_TRANSFER_FROM_STRUCT + '[]'
 
-export const ABI_DEFINITION: { [key in CommandType]: string[] } = {
+export const COMMAND_DEFINITION: { [key in CommandType]: CommandDefinition } = {
   // Batch Reverts
-  [CommandType.EXECUTE_SUB_PLAN]: ['bytes', 'bytes[]'],
+  [CommandType.EXECUTE_SUB_PLAN]: {
+    parser: Parser.Abi,
+    params: [
+      { name: 'commands', type: 'bytes' },
+      { name: 'inputs', type: 'bytes[]' },
+    ],
+  },
 
   // Permit2 Actions
-  [CommandType.PERMIT2_PERMIT]: [PERMIT_STRUCT, 'bytes'],
-  [CommandType.PERMIT2_PERMIT_BATCH]: [PERMIT_BATCH_STRUCT, 'bytes'],
-  [CommandType.PERMIT2_TRANSFER_FROM]: ['address', 'address', 'uint160'],
-  [CommandType.PERMIT2_TRANSFER_FROM_BATCH]: [PERMIT2_TRANSFER_FROM_BATCH_STRUCT],
+  [CommandType.PERMIT2_PERMIT]: {
+    parser: Parser.Abi,
+    params: [
+      { name: 'permit', type: PERMIT_STRUCT },
+      { name: 'signature', type: 'bytes' },
+    ],
+  },
+  [CommandType.PERMIT2_PERMIT_BATCH]: {
+    parser: Parser.Abi,
+    params: [
+      { name: 'permit', type: PERMIT_BATCH_STRUCT },
+      { name: 'signature', type: 'bytes' },
+    ],
+  },
+  [CommandType.PERMIT2_TRANSFER_FROM]: {
+    parser: Parser.Abi,
+    params: [
+      { name: 'token', type: 'address' },
+      { name: 'recipient', type: 'address' },
+      { name: 'amount', type: 'uint160' },
+    ],
+  },
+  [CommandType.PERMIT2_TRANSFER_FROM_BATCH]: {
+    parser: Parser.Abi,
+    params: [
+      {
+        name: 'transferFrom',
+        type: PERMIT2_TRANSFER_FROM_BATCH_STRUCT,
+      },
+    ],
+  },
 
   // Uniswap Actions
-  [CommandType.V3_SWAP_EXACT_IN]: ['address', 'uint256', 'uint256', 'bytes', 'bool'],
-  [CommandType.V3_SWAP_EXACT_OUT]: ['address', 'uint256', 'uint256', 'bytes', 'bool'],
-  [CommandType.V2_SWAP_EXACT_IN]: ['address', 'uint256', 'uint256', 'address[]', 'bool'],
-  [CommandType.V2_SWAP_EXACT_OUT]: ['address', 'uint256', 'uint256', 'address[]', 'bool'],
+  [CommandType.V3_SWAP_EXACT_IN]: {
+    parser: Parser.Abi,
+    params: [
+      { name: 'recipient', type: 'address' },
+      { name: 'amountIn', type: 'uint256' },
+      { name: 'amountOutMin', type: 'uint256' },
+      { name: 'path', subparser: Subparser.V3PathExactIn, type: 'bytes' },
+      { name: 'payerIsUser', type: 'bool' },
+    ],
+  },
+  [CommandType.V3_SWAP_EXACT_OUT]: {
+    parser: Parser.Abi,
+    params: [
+      { name: 'recipient', type: 'address' },
+      { name: 'amountOut', type: 'uint256' },
+      { name: 'amountInMax', type: 'uint256' },
+      { name: 'path', subparser: Subparser.V3PathExactOut, type: 'bytes' },
+      { name: 'payerIsUser', type: 'bool' },
+    ],
+  },
+  [CommandType.V2_SWAP_EXACT_IN]: {
+    parser: Parser.Abi,
+    params: [
+      { name: 'recipient', type: 'address' },
+      { name: 'amountIn', type: 'uint256' },
+      { name: 'amountOutMin', type: 'uint256' },
+      { name: 'path', type: 'address[]' },
+      { name: 'payerIsUser', type: 'bool' },
+    ],
+  },
+  [CommandType.V2_SWAP_EXACT_OUT]: {
+    parser: Parser.Abi,
+    params: [
+      { name: 'recipient', type: 'address' },
+      { name: 'amountOut', type: 'uint256' },
+      { name: 'amountInMax', type: 'uint256' },
+      { name: 'path', type: 'address[]' },
+      { name: 'payerIsUser', type: 'bool' },
+    ],
+  },
+  [CommandType.V4_SWAP]: { parser: Parser.V4Actions },
 
   // Token Actions and Checks
-  [CommandType.WRAP_ETH]: ['address', 'uint256'],
-  [CommandType.UNWRAP_WETH]: ['address', 'uint256'],
-  [CommandType.SWEEP]: ['address', 'address', 'uint256'],
-  [CommandType.SWEEP_ERC721]: ['address', 'address', 'uint256'],
-  [CommandType.SWEEP_ERC1155]: ['address', 'address', 'uint256', 'uint256'],
-  [CommandType.TRANSFER]: ['address', 'address', 'uint256'],
-  [CommandType.PAY_PORTION]: ['address', 'address', 'uint256'],
-  [CommandType.BALANCE_CHECK_ERC20]: ['address', 'address', 'uint256'],
-  [CommandType.OWNER_CHECK_721]: ['address', 'address', 'uint256'],
-  [CommandType.OWNER_CHECK_1155]: ['address', 'address', 'uint256', 'uint256'],
-  [CommandType.APPROVE_ERC20]: ['address', 'uint256'],
+  [CommandType.WRAP_ETH]: {
+    parser: Parser.Abi,
+    params: [
+      { name: 'recipient', type: 'address' },
+      { name: 'amount', type: 'uint256' },
+    ],
+  },
+  [CommandType.UNWRAP_WETH]: {
+    parser: Parser.Abi,
+    params: [
+      { name: 'recipient', type: 'address' },
+      { name: 'amountMin', type: 'uint256' },
+    ],
+  },
+  [CommandType.SWEEP]: {
+    parser: Parser.Abi,
+    params: [
+      { name: 'token', type: 'address' },
+      { name: 'recipient', type: 'address' },
+      { name: 'amountMin', type: 'uint256' },
+    ],
+  },
+  [CommandType.TRANSFER]: {
+    parser: Parser.Abi,
+    params: [
+      { name: 'token', type: 'address' },
+      { name: 'recipient', type: 'address' },
+      { name: 'value', type: 'uint256' },
+    ],
+  },
+  [CommandType.PAY_PORTION]: {
+    parser: Parser.Abi,
+    params: [
+      { name: 'token', type: 'address' },
+      { name: 'recipient', type: 'address' },
+      { name: 'bips', type: 'uint256' },
+    ],
+  },
+  [CommandType.BALANCE_CHECK_ERC20]: {
+    parser: Parser.Abi,
+    params: [
+      { name: 'owner', type: 'address' },
+      { name: 'token', type: 'address' },
+      { name: 'minBalance', type: 'uint256' },
+    ],
+  },
+  [CommandType.V4_INITIALIZE_POOL]: {
+    parser: Parser.Abi,
+    params: [
+      { name: 'poolKey', type: POOL_KEY_STRUCT },
+      { name: 'sqrtPriceX96', type: 'uint160' },
+    ],
+  },
 
-  // NFT Markets
-  [CommandType.SEAPORT_V1_5]: ['uint256', 'bytes'],
-  [CommandType.SEAPORT_V1_4]: ['uint256', 'bytes'],
-  [CommandType.NFTX]: ['uint256', 'bytes'],
-  [CommandType.LOOKS_RARE_V2]: ['uint256', 'bytes'],
-  [CommandType.X2Y2_721]: ['uint256', 'bytes', 'address', 'address', 'uint256'],
-  [CommandType.X2Y2_1155]: ['uint256', 'bytes', 'address', 'address', 'uint256', 'uint256'],
-  [CommandType.FOUNDATION]: ['uint256', 'bytes', 'address', 'address', 'uint256'],
-  [CommandType.SUDOSWAP]: ['uint256', 'bytes'],
-  [CommandType.NFT20]: ['uint256', 'bytes'],
-  [CommandType.CRYPTOPUNKS]: ['uint256', 'address', 'uint256'],
-  [CommandType.ELEMENT_MARKET]: ['uint256', 'bytes'],
+  // Position Actions
+  [CommandType.V3_POSITION_MANAGER_PERMIT]: { parser: Parser.V3Actions },
+  [CommandType.V3_POSITION_MANAGER_CALL]: { parser: Parser.V3Actions },
+  [CommandType.V4_POSITION_MANAGER_CALL]: { parser: Parser.V4Actions },
 }
 
-// Inspired by https://github.com/tetsuroba/uniswap-universal-decoder
-export function extractPathFromV3(fullPath: string): string[] {
-    const fullPathWithoutHexSymbol = fullPath.substring(2);
-    let path = [];
-    let currentAddress = "";
-    for (let i = 0; i < fullPathWithoutHexSymbol.length; i++) {
-        currentAddress += fullPathWithoutHexSymbol[i];
-        if (currentAddress.length === 40) {
-            path.push('0x' + currentAddress);
-            path.push('0x' + fullPathWithoutHexSymbol.slice(i, i + 6));
-            i = i + 6;
-            currentAddress = "";
-        }
+export class RoutePlanner {
+  commands: string
+  inputs: string[]
+
+  constructor() {
+    this.commands = '0x'
+    this.inputs = []
+  }
+
+  addSubPlan(subplan: RoutePlanner): RoutePlanner {
+    this.addCommand(CommandType.EXECUTE_SUB_PLAN, [subplan.commands, subplan.inputs], true)
+    return this
+  }
+
+  addCommand(type: CommandType, parameters: any[], allowRevert = false): RoutePlanner {
+    let command = createCommand(type, parameters)
+    this.inputs.push(command.encodedInput)
+    if (allowRevert) {
+      if (!REVERTIBLE_COMMANDS.has(command.type)) {
+        throw new Error(`command type: ${command.type} cannot be allowed to revert`)
+      }
+      command.type = command.type | ALLOW_REVERT_FLAG
     }
-    return path;
+
+    this.commands = this.commands.concat(command.type.toString(16).padStart(2, '0'))
+    return this
+  }
+}
+
+export type RouterCommand = {
+  type: CommandType
+  encodedInput: string
+}
+
+export function createCommand(type: CommandType, parameters: any[]): RouterCommand {
+  const commandDef = COMMAND_DEFINITION[type]
+  switch (commandDef.parser) {
+    case Parser.Abi:
+      const encodedInput = ethers.AbiCoder.defaultAbiCoder().encode(
+        commandDef.params.map((abi) => abi.type),
+        parameters
+      )
+      return { type, encodedInput }
+    case Parser.V4Actions:
+      // v4 swap data comes pre-encoded at index 0
+      return { type, encodedInput: parameters[0] }
+    case Parser.V3Actions:
+      // v4 swap data comes pre-encoded at index 0
+      return { type, encodedInput: parameters[0] }
+  }
+}
+
+export type Param = {
+  readonly name: string
+  readonly value: any
+}
+
+export type UniversalRouterCommand = {
+  readonly commandName: string
+  readonly commandType: CommandType
+  readonly params: readonly Param[]
+}
+
+export type UniversalRouterCall = {
+  readonly commands: readonly UniversalRouterCommand[]
+}
+
+export type V3PathItem = {
+  readonly tokenIn: string
+  readonly tokenOut: string
+  readonly fee: number
+}
+
+export interface CommandsDefinition {
+  [key: number]: CommandDefinition
+}
+
+// Parses UniversalRouter V2 commands
+export abstract class CommandParser {
+  public static INTERFACE: ethers.Interface = new ethers.Interface(abi.abi);
+
+  public static parseCalldata(calldata: string): UniversalRouterCall {
+    const genericParser = new GenericCommandParser(COMMAND_DEFINITION)
+    const txDescription = CommandParser.INTERFACE.parseTransaction({ data: calldata })
+    // @ts-ignore
+    const { commands, inputs } = txDescription.args
+    return genericParser.parse(commands, inputs)
+  }
+}
+
+// Parses commands based on given command definition
+export class GenericCommandParser {
+  constructor(private readonly commandDefinition: CommandsDefinition) {}
+
+  public parse(commands: string, inputs: string[]): UniversalRouterCall {
+    const commandTypes = GenericCommandParser.getCommands(commands)
+
+    return {
+      commands: commandTypes.map((commandType: CommandType, i: number) => {
+        const commandDef = this.commandDefinition[commandType]
+
+        if (commandDef.parser === Parser.V4Actions) {
+          // @ts-ignore
+          const { actions } = V4BaseActionsParser.parseCalldata(inputs[i])
+          return {
+            commandName: CommandType[commandType],
+            commandType,
+            params: v4RouterCallToParams(actions),
+          }
+        } else if (commandDef.parser === Parser.Abi) {
+          const abiDef = commandDef.params
+          const rawParams = ethers.AbiCoder.defaultAbiCoder().decode(
+            abiDef.map((command) => command.type),
+            inputs[i]
+          )
+
+          const params = rawParams.map((param: any, j: number) => {
+            switch (abiDef[j].subparser) {
+              case Subparser.V3PathExactIn:
+                return {
+                  name: abiDef[j].name,
+                  value: parseV3PathExactIn(param),
+                }
+              case Subparser.V3PathExactOut:
+                return {
+                  name: abiDef[j].name,
+                  value: parseV3PathExactOut(param),
+                }
+              default:
+                return {
+                  name: abiDef[j].name,
+                  value: param,
+                }
+            }
+          })
+          return {
+            commandName: CommandType[commandType],
+            commandType,
+            params,
+          }
+        } else if (commandDef.parser === Parser.V3Actions) {
+          // TODO: implement better parsing here
+          return {
+            commandName: CommandType[commandType],
+            commandType,
+            params: inputs.map((input) => ({ name: 'command', value: input })),
+          }
+        } else {
+          throw new Error(`Unsupported parser: ${commandDef}`)
+        }
+      }),
+    }
+  }
+
+  // parse command types from bytes string
+  private static getCommands(commands: string): CommandType[] {
+    const commandTypes = []
+
+    for (let i = 2; i < commands.length; i += 2) {
+      const byte = commands.substring(i, i + 2)
+      commandTypes.push(parseInt(byte, 16) as CommandType)
+    }
+
+    return commandTypes
+  }
+}
+
+export function parseV3PathExactIn(path: string): readonly V3PathItem[] {
+  const strippedPath = path.replace('0x', '')
+  let tokenIn = ethers.getAddress(strippedPath.substring(0, 40))
+  let loc = 40
+  const res = []
+  while (loc < strippedPath.length) {
+    const feeAndTokenOut = strippedPath.substring(loc, loc + 46)
+    const fee = parseInt(feeAndTokenOut.substring(0, 6), 16)
+    const tokenOut = ethers.getAddress(feeAndTokenOut.substring(6, 46))
+
+    res.push({
+      tokenIn,
+      tokenOut,
+      fee,
+    })
+    tokenIn = tokenOut
+    loc += 46
+  }
+
+  return res
+}
+
+export function parseV3PathExactOut(path: string): readonly V3PathItem[] {
+  const strippedPath = path.replace('0x', '')
+  let tokenIn = ethers.getAddress(strippedPath.substring(strippedPath.length - 40))
+  let loc = strippedPath.length - 86 // 86 = (20 addr + 3 fee + 20 addr) * 2 (for hex characters)
+  const res = []
+  while (loc >= 0) {
+    const feeAndTokenOut = strippedPath.substring(loc, loc + 46)
+    const tokenOut = ethers.getAddress(feeAndTokenOut.substring(0, 40))
+    const fee = parseInt(feeAndTokenOut.substring(40, 46), 16)
+
+    res.push({
+      tokenIn,
+      tokenOut,
+      fee,
+    })
+    tokenIn = tokenOut
+
+    loc -= 46
+  }
+
+  return res
+}
+
+// @ts-ignore
+function v4RouterCallToParams(actions: readonly V4RouterAction[]): readonly Param[] {
+  return actions.map((action) => {
+    return {
+      name: action.actionName,
+      // @ts-ignore
+      value: action.params.map((param) => {
+        return {
+          name: param.name,
+          value: param.value,
+        }
+      }),
+    }
+  })
 }
