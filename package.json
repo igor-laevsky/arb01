@@ -23,6 +23,7 @@
     "alchemy-sdk": "^3.4.8",
     "axios": "^1.7.7",
     "ccxt": "^4.4.34",
+    "dotenv": "^16.4.5",
     "ethers": "^6.13.4",
     "ethers-multicall": "^0.2.3"
   }

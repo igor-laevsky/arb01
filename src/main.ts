@@ -1,3 +1,5 @@
+import 'dotenv/config'
+
 import {Alchemy, AlchemySubscription, Network} from "alchemy-sdk";
 import {decodeCalldata, getAllKnownRouterAddresses} from "./routers.js";
 import {estimatePriceImpact, getTokenMeta} from "./uniswap.js";
@@ -13,7 +15,7 @@ avaliable_currencies.add('WETH');
 avaliable_currencies.add('WBTC');
 
 const settings = {
-  apiKey: "***REMOVED***",
+  apiKey: process.env.ALCHEMY_KEY,
   network: Network.ETH_MAINNET,
 };
 
